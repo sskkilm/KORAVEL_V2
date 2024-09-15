@@ -1,10 +1,12 @@
 package com.minizin.travel.user.service;
 
-import com.minizin.travel.user.domain.dto.FindPasswordDto;
-import com.minizin.travel.user.domain.dto.SendAuthCodeDto;
-import com.minizin.travel.user.domain.dto.VerifyAuthCodeDto;
-import com.minizin.travel.user.domain.enums.MailErrorCode;
-import com.minizin.travel.user.domain.exception.CustomMailException;
+import com.minizin.travel.v1.user.domain.dto.FindPasswordDto;
+import com.minizin.travel.v1.user.domain.dto.SendAuthCodeDto;
+import com.minizin.travel.v1.user.domain.dto.VerifyAuthCodeDto;
+import com.minizin.travel.v1.user.domain.enums.MailErrorCode;
+import com.minizin.travel.v1.user.domain.exception.CustomMailException;
+import com.minizin.travel.v1.user.service.MailService;
+import com.minizin.travel.v1.user.service.RedisService;
 import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

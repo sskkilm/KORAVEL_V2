@@ -1,11 +1,13 @@
 package com.minizin.travel.user.service;
 
-import com.minizin.travel.user.domain.dto.*;
-import com.minizin.travel.user.domain.entity.UserEntity;
-import com.minizin.travel.user.domain.enums.LoginType;
-import com.minizin.travel.user.domain.enums.UserErrorCode;
-import com.minizin.travel.user.domain.exception.CustomUserException;
-import com.minizin.travel.user.domain.repository.UserRepository;
+import com.minizin.travel.v1.user.domain.dto.*;
+import com.minizin.travel.v1.user.domain.entity.UserEntity;
+import com.minizin.travel.v1.user.domain.enums.LoginType;
+import com.minizin.travel.v1.user.domain.enums.UserErrorCode;
+import com.minizin.travel.v1.user.domain.exception.CustomUserException;
+import com.minizin.travel.v1.user.domain.repository.UserRepository;
+import com.minizin.travel.v1.user.service.MailService;
+import com.minizin.travel.v1.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

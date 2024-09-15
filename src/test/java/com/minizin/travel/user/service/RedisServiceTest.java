@@ -1,5 +1,6 @@
 package com.minizin.travel.user.service;
 
+import com.minizin.travel.v1.user.service.RedisService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

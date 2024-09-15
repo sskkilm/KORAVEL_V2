@@ -1,10 +1,11 @@
 package com.minizin.travel.user.service;
 
-import com.minizin.travel.user.domain.dto.PrincipalDetails;
-import com.minizin.travel.user.domain.entity.UserEntity;
-import com.minizin.travel.user.domain.enums.LoginType;
-import com.minizin.travel.user.domain.enums.Role;
-import com.minizin.travel.user.domain.repository.UserRepository;
+import com.minizin.travel.v1.user.domain.dto.PrincipalDetails;
+import com.minizin.travel.v1.user.domain.entity.UserEntity;
+import com.minizin.travel.v1.user.domain.enums.LoginType;
+import com.minizin.travel.v1.user.domain.enums.Role;
+import com.minizin.travel.v1.user.domain.repository.UserRepository;
+import com.minizin.travel.v1.user.service.CustomOAuth2UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
