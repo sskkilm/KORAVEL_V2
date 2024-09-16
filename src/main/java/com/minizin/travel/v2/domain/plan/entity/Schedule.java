@@ -2,9 +2,14 @@ package com.minizin.travel.v2.domain.plan.entity;
 
 import com.minizin.travel.v2.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,9 +27,17 @@ public class Schedule extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDate date;
 
+    @OneToMany(mappedBy = "schedule", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Place> placeList = new ArrayList<>();
+
     @Builder
     public Schedule(Plan plan, LocalDate date) {
         this.plan = plan;
         this.date = date;
+    }
+
+    public void addPlan(Plan plan) {
+        this.plan = plan;
+        plan.getScheduleList().add(this);
     }
 }

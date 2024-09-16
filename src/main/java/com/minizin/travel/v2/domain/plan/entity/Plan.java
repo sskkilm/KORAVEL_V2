@@ -4,9 +4,14 @@ import com.minizin.travel.v2.domain.plan.enums.Visibility;
 import com.minizin.travel.v2.domain.user.entity.UserEntity;
 import com.minizin.travel.v2.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -39,6 +44,9 @@ public class Plan extends BaseTimeEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Visibility visibility;
+
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Schedule> scheduleList = new ArrayList<>();
 
     @Builder
     public Plan(UserEntity user, String thema, String title, LocalDate startDate, LocalDate endDate, Integer numberOfMembers, Visibility visibility) {
