@@ -9,6 +9,8 @@ import lombok.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class UserEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,13 +35,13 @@ public class UserEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private LoginType loginType;
 
-    @Builder
-    public UserEntity(String username, String password, String email, String nickname, Authority role, LoginType loginType) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.nickname = nickname;
-        this.role = role;
-        this.loginType = loginType;
-    }
+//    @Builder
+//    public UserEntity(String username, String password, String email, String nickname, Authority role, LoginType loginType) {
+//        this.username = username;
+//        this.password = password;
+//        this.email = email;
+//        this.nickname = nickname;
+//        this.role = role;
+//        this.loginType = loginType;
+//    }
 }

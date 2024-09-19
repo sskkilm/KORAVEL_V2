@@ -32,6 +32,6 @@ public class Budget extends BaseTimeEntity {
 
     public void addPlace(Place place) {
         this.place = place;
-        place.getBudgets().add(this);
+        place.getBudgetList().add(this);
     }
 }
