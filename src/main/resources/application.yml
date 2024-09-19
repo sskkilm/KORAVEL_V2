@@ -1,6 +1,6 @@
 spring:
-  profiles:
-    include: oauth
+#  profiles:
+#    include: oauth
 
   datasource:
     url: jdbc:h2:mem:test
@@ -14,6 +14,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    open-in-view: false
 
   data:
     redis:
@@ -28,6 +29,11 @@ spring:
 
   jwt:
     secret: ENC(ZXEtGqwnuaYfyjUWS/iWRZkktb2Ss56OgHnVYkxCcGs2ssDuRxp3dVL9LKiuHFZhHCeaqJ9FabAu1AdY+ftwibqg6dJVsksrA3L/97CP8UZKERFARHbNkrZrC18vpmVk4I+MFTD0mjF/vzS6ovMmiA==)
+
+  h2:
+    console:
+      enabled: true
+
 
 logging:
   level:
