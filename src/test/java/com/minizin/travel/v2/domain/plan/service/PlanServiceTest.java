@@ -1,7 +1,10 @@
 package com.minizin.travel.v2.domain.plan.service;
 
 import com.minizin.travel.v2.domain.plan.dto.*;
+import com.minizin.travel.v2.domain.plan.entity.Budget;
+import com.minizin.travel.v2.domain.plan.entity.Place;
 import com.minizin.travel.v2.domain.plan.entity.Plan;
+import com.minizin.travel.v2.domain.plan.entity.Schedule;
 import com.minizin.travel.v2.domain.plan.enums.Visibility;
 import com.minizin.travel.v2.domain.plan.repository.PlanRepository;
 import com.minizin.travel.v2.domain.user.entity.UserEntity;
@@ -251,8 +254,8 @@ class PlanServiceTest {
     }
 
     @Test
-    @DisplayName("여행 계획 삭제 실패")
-    void deletePlan_fail() {
+    @DisplayName("여행 계획 삭제 실패 - 존재하지 않는 계획")
+    void deletePlan_fail_PlanNotFound() {
         //given
         given(planRepository.findById(1L))
                 .willReturn(Optional.empty());
@@ -264,5 +267,72 @@ class PlanServiceTest {
 
         //then
         assertNotNull(illegalArgumentException);
+    }
+
+    @Test
+    @DisplayName("여행 계획 목록 조회")
+    void getPlanList() {
+        //given
+        LocalTime time = LocalTime.of(11, 22);
+        LocalDate date = LocalDate.of(2024, 9, 17);
+        Plan plan = Plan.builder()
+                .title("title")
+                .thema("thema")
+                .startDate(date)
+                .endDate(date)
+                .visibility(Visibility.PUBLIC)
+                .numberOfMembers(1)
+                .build();
+        Schedule schedule = Schedule.builder()
+                .date(date)
+                .build();
+        schedule.addPlan(plan);
+        Place place = Place.builder()
+                .description("description")
+                .name("name")
+                .address("address")
+                .arrivalTime(time)
+                .memo("memo")
+                .x(1.0)
+                .y(1.0)
+                .build();
+        place.addSchedule(schedule);
+        Budget budget = Budget.builder()
+                .purpose("purpose")
+                .amount(10000)
+                .build();
+        budget.addPlace(place);
+
+        given(planRepository.findAll())
+                .willReturn(List.of(plan));
+
+        //when
+        List<PlanDto> planDtoList = planService.getPlanList();
+
+        //then
+        assertEquals(1, planDtoList.size());
+        PlanDto planDto = planDtoList.get(0);
+        assertEquals("title", planDto.title());
+        assertEquals("thema", planDto.thema());
+        assertEquals(date, planDto.startDate());
+        assertEquals(date, planDto.endDate());
+        assertEquals(Visibility.PUBLIC, planDto.visibility());
+        assertEquals(1, planDto.numberOfMembers());
+
+        ScheduleDto.Response scheduleDtoResponse = planDto.scheduleDtoResponseList().get(0);
+        assertEquals(date, scheduleDtoResponse.date());
+
+        PlaceDto.Response placeDtoResponse = scheduleDtoResponse.placeDtoResponseList().get(0);
+        assertEquals("description", placeDtoResponse.description());
+        assertEquals("name", placeDtoResponse.name());
+        assertEquals("address", placeDtoResponse.address());
+        assertEquals("memo", placeDtoResponse.memo());
+        assertEquals(time, placeDtoResponse.arrivalTime());
+        assertEquals(1.0, placeDtoResponse.x());
+        assertEquals(1.0, placeDtoResponse.y());
+
+        BudgetDto.Response budgetDtoResponse = placeDtoResponse.budgetDtoResponseList().get(0);
+        assertEquals("purpose", budgetDtoResponse.purpose());
+        assertEquals(10000, budgetDtoResponse.amount());
     }
 }
