@@ -4,6 +4,9 @@ import com.minizin.travel.v2.domain.plan.enums.Visibility;
 import com.minizin.travel.v2.domain.user.entity.UserEntity;
 import com.minizin.travel.v2.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -57,5 +60,15 @@ public class Plan extends BaseTimeEntity {
         this.endDate = endDate;
         this.numberOfMembers = numberOfMembers;
         this.visibility = visibility;
+    }
+
+    public void update(String title, String thema, LocalDate startDate, LocalDate endDate,
+                       Visibility visibility, Integer numberOfMembers) {
+        this.title = title;
+        this.thema = thema;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.visibility = visibility;
+        this.numberOfMembers = numberOfMembers;
     }
 }

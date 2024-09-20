@@ -1,13 +1,11 @@
 package com.minizin.travel.v2.domain.plan.controller;
 
 import com.minizin.travel.v2.domain.plan.dto.PlanCreateDto;
+import com.minizin.travel.v2.domain.plan.dto.PlanUpdateDto;
 import com.minizin.travel.v2.domain.plan.service.PlanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,4 +21,11 @@ public class PlanController {
         return planService.createPlan(request);
     }
 
+    @PutMapping("/{id}")
+    public PlanUpdateDto.Response updatePlan(
+            @PathVariable Long id,
+            @Valid @RequestBody PlanUpdateDto.Request request
+    ) {
+        return planService.updatePlan(id, request);
+    }
 }
