@@ -230,4 +230,39 @@ class PlanServiceTest {
         // then
         assertNotNull(illegalArgumentException);
     }
+
+    @Test
+    @DisplayName("여행 계획 삭제 성공")
+    void deletePlan_success() {
+        //given
+        given(planRepository.findById(1L))
+                .willReturn(Optional.of(
+                        Plan.builder()
+                                .title("title")
+                                .thema("thema")
+                                .build()
+                ));
+
+        //when
+        PlanDeleteResponseDto planDeleteResponseDto = planService.deletePlan(1L);
+
+        //then
+        assertEquals("success", planDeleteResponseDto.message());
+    }
+
+    @Test
+    @DisplayName("여행 계획 삭제 실패")
+    void deletePlan_fail() {
+        //given
+        given(planRepository.findById(1L))
+                .willReturn(Optional.empty());
+
+        //when
+        IllegalArgumentException illegalArgumentException = assertThrows(
+                IllegalArgumentException.class, () -> planService.deletePlan(1L)
+        );
+
+        //then
+        assertNotNull(illegalArgumentException);
+    }
 }
