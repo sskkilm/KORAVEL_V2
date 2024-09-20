@@ -2,6 +2,7 @@ package com.minizin.travel.v2.domain.plan.service;
 
 import com.minizin.travel.v2.domain.plan.dto.PlanCreateDto;
 import com.minizin.travel.v2.domain.plan.dto.PlanDeleteResponseDto;
+import com.minizin.travel.v2.domain.plan.dto.PlanDto;
 import com.minizin.travel.v2.domain.plan.dto.PlanUpdateDto;
 import com.minizin.travel.v2.domain.plan.entity.Plan;
 import com.minizin.travel.v2.domain.plan.repository.PlanRepository;
@@ -9,6 +10,8 @@ import com.minizin.travel.v2.domain.user.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -55,5 +58,11 @@ public class PlanService {
         planRepository.delete(plan);
 
         return new PlanDeleteResponseDto("success");
+    }
+
+    @Transactional(readOnly = true)
+    public List<PlanDto> getPlanList() {
+
+        return planRepository.findAll().stream().map(PlanDto::toDto).toList();
     }
 }

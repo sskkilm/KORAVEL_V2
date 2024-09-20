@@ -2,11 +2,14 @@ package com.minizin.travel.v2.domain.plan.controller;
 
 import com.minizin.travel.v2.domain.plan.dto.PlanCreateDto;
 import com.minizin.travel.v2.domain.plan.dto.PlanDeleteResponseDto;
+import com.minizin.travel.v2.domain.plan.dto.PlanDto;
 import com.minizin.travel.v2.domain.plan.dto.PlanUpdateDto;
 import com.minizin.travel.v2.domain.plan.service.PlanService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,5 +36,10 @@ public class PlanController {
     @DeleteMapping("/{id}")
     public PlanDeleteResponseDto deletePlan(@PathVariable Long id) {
         return planService.deletePlan(id);
+    }
+
+    @GetMapping
+    public List<PlanDto> getPlanList() {
+        return planService.getPlanList();
     }
 }
