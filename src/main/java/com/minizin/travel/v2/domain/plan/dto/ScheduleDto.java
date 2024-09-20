@@ -2,6 +2,7 @@ package com.minizin.travel.v2.domain.plan.dto;
 
 import com.minizin.travel.v2.domain.plan.entity.Place;
 import com.minizin.travel.v2.domain.plan.entity.Schedule;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -11,7 +12,9 @@ public record ScheduleDto() {
 
     @Builder
     public record Request(
+            @NotNull
             LocalDate date,
+            @NotNull
             List<PlaceDto.Request> placeDtoRequestList
     ) {
         public static Schedule toEntity(Request request) {

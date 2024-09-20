@@ -14,6 +14,10 @@ public class PlanService {
 
     public PlanCreateDto.Response createPlan(PlanCreateDto.Request request) {
 
+        if (request.startDate().isAfter(request.endDate())) {
+            throw new IllegalArgumentException("날짜 정보가 유효하지 않습니다.");
+        }
+
         return PlanCreateDto.Response.toDto(
                 planRepository.save(
                         PlanCreateDto.Request.toEntity(request, UserEntity.builder().id(1L).build())

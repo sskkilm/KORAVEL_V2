@@ -4,6 +4,9 @@ import com.minizin.travel.v2.domain.plan.entity.Plan;
 import com.minizin.travel.v2.domain.plan.entity.Schedule;
 import com.minizin.travel.v2.domain.plan.enums.Visibility;
 import com.minizin.travel.v2.domain.user.entity.UserEntity;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 import java.time.LocalDate;
@@ -13,12 +16,19 @@ public record PlanCreateDto(String a, String b) {
 
     @Builder
     public record Request(
+            @NotBlank
             String title,
+            @NotBlank
             String thema,
+            @NotNull
             LocalDate startDate,
+            @NotNull
             LocalDate endDate,
+            @NotNull
             Visibility visibility,
+            @Min(1)
             Integer numberOfMembers,
+            @NotNull
             List<ScheduleDto.Request> scheduleDtoRequestList
     ) {
         public static Plan toEntity(Request request, UserEntity user) {
