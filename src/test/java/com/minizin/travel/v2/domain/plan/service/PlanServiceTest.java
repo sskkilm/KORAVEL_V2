@@ -19,7 +19,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -110,5 +110,34 @@ class PlanServiceTest {
         BudgetDto.Response budgetDtoResponse = placeDtoResponse.budgetDtoResponseList().get(0);
         assertEquals("purpose", budgetDtoResponse.purpose());
         assertEquals(10000, budgetDtoResponse.amount());
+    }
+
+    @Test
+    @DisplayName("여행 계획 생성 실패 - 유효하지않은 날짜 정보")
+    void createPlan_fail_InvalidDate() {
+        // given
+        LocalDate startDate = LocalDate.of(2024, 9, 17);
+        LocalDate endDate = LocalDate.of(2024, 9, 16);
+
+        PlanCreateDto.Request request = PlanCreateDto.Request.builder()
+                .title("title")
+                .thema("thema")
+                .startDate(startDate)
+                .endDate(endDate)
+                .visibility(Visibility.PUBLIC)
+                .numberOfMembers(1)
+                .build();
+
+        UserEntity user = UserEntity.builder()
+                .id(1L)
+                .build();
+
+        // when
+        IllegalArgumentException illegalArgumentException = assertThrows(
+                IllegalArgumentException.class, () -> planService.createPlan(request)
+        );
+
+        // then
+        assertNotNull(illegalArgumentException);
     }
 }
