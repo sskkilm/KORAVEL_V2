@@ -43,9 +43,9 @@ public class PlanService {
         Plan plan = planRepository.findById(planId)
                 .orElseThrow(() -> new IllegalArgumentException("plan not found"));
 
-//        if (!Objects.equals(plan.getUser().getId(), user.getId())) {
-//            throw new IllegalArgumentException("user plan unmatched");
-//        }
+        if (!Objects.equals(plan.getUser().getId(), user.getId())) {
+            throw new IllegalArgumentException("user plan unmatched");
+        }
 
         plan.update(
                 request.title(), request.thema(), request.startDate(),
@@ -60,9 +60,9 @@ public class PlanService {
         Plan plan = planRepository.findById(planId)
                 .orElseThrow(() -> new IllegalArgumentException("plan not found"));
 
-//        if (!Objects.equals(plan.getUser().getId(), user.getId())) {
-//            throw new IllegalArgumentException("user plan unmatched");
-//        }
+        if (!Objects.equals(plan.getUser().getId(), user.getId())) {
+            throw new IllegalArgumentException("user plan unmatched");
+        }
 
         planRepository.delete(plan);
 

@@ -247,20 +247,66 @@ class PlanServiceTest {
     }
 
     @Test
-    @DisplayName("여행 계획 삭제 성공")
-    void deletePlan_success() {
-        //given
-        given(planRepository.findById(1L))
-                .willReturn(Optional.of(
-                        Plan.builder()
-                                .title("title")
-                                .thema("thema")
-                                .build()
-                ));
+    @DisplayName("여행 계획 수정 실패 - 사용자 계획 불일치")
+    void updatePlan_fail_UserPlanUnmatched() {
+        // given
+        LocalDate date = LocalDate.of(2024, 9, 17);
+
+        PlanUpdateDto.Request request = PlanUpdateDto.Request.builder()
+                .title("title")
+                .thema("thema")
+                .startDate(date)
+                .endDate(date)
+                .visibility(Visibility.PUBLIC)
+                .numberOfMembers(1)
+                .build();
 
         UserEntity user = UserEntity.builder()
                 .id(1L)
                 .build();
+
+        given(planRepository.findById(1L))
+                .willReturn(Optional.of(
+                        Plan.builder()
+                                .user(user)
+                                .title("title")
+                                .thema("thema")
+                                .startDate(date)
+                                .endDate(date)
+                                .visibility(Visibility.PUBLIC)
+                                .numberOfMembers(1)
+                                .build()
+                ));
+
+        UserEntity user2 = UserEntity.builder()
+                .id(2L)
+                .build();
+
+        // when
+        IllegalArgumentException illegalArgumentException = assertThrows(
+                IllegalArgumentException.class, () -> planService.updatePlan(1L, request, user2)
+        );
+
+        // then
+        assertNotNull(illegalArgumentException);
+    }
+
+    @Test
+    @DisplayName("여행 계획 삭제 성공")
+    void deletePlan_success() {
+        //given
+        UserEntity user = UserEntity.builder()
+                .id(1L)
+                .build();
+
+        given(planRepository.findById(1L))
+                .willReturn(Optional.of(
+                        Plan.builder()
+                                .user(user)
+                                .title("title")
+                                .thema("thema")
+                                .build()
+                ));
 
         //when
         PlanDeleteResponseDto planDeleteResponseDto = planService.deletePlan(1L, user);
@@ -283,6 +329,36 @@ class PlanServiceTest {
         //when
         IllegalArgumentException illegalArgumentException = assertThrows(
                 IllegalArgumentException.class, () -> planService.deletePlan(1L, user)
+        );
+
+        //then
+        assertNotNull(illegalArgumentException);
+    }
+
+    @Test
+    @DisplayName("여행 계획 삭제 실패 - 사용자 계획 불일치")
+    void deletePlan_fail_UserPlanUnmatched() {
+        //given
+        UserEntity user = UserEntity.builder()
+                .id(1L)
+                .build();
+
+        given(planRepository.findById(1L))
+                .willReturn(Optional.of(
+                        Plan.builder()
+                                .user(user)
+                                .title("title")
+                                .thema("thema")
+                                .build()
+                ));
+
+        UserEntity user2 = UserEntity.builder()
+                .id(2L)
+                .build();
+
+        //when
+        IllegalArgumentException illegalArgumentException = assertThrows(
+                IllegalArgumentException.class, () -> planService.deletePlan(1L, user2)
         );
 
         //then
