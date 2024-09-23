@@ -85,7 +85,7 @@ class PlanServiceTest {
                 .willReturn(PlanCreateDto.Request.toEntity(request, user));
 
         // when
-        PlanCreateDto.Response response = planService.createPlan(request);
+        PlanCreateDto.Response response = planService.createPlan(request, user);
 
         // then
         assertEquals(1L, response.userId());
@@ -129,9 +129,13 @@ class PlanServiceTest {
                 .numberOfMembers(1)
                 .build();
 
+        UserEntity user = UserEntity.builder()
+                .id(1L)
+                .build();
+
         // when
         IllegalArgumentException illegalArgumentException = assertThrows(
-                IllegalArgumentException.class, () -> planService.createPlan(request)
+                IllegalArgumentException.class, () -> planService.createPlan(request, user)
         );
 
         // then
@@ -172,7 +176,7 @@ class PlanServiceTest {
                 ));
 
         //when
-        PlanUpdateDto.Response response = planService.updatePlan(1L, request);
+        PlanUpdateDto.Response response = planService.updatePlan(1L, request, user);
 
         //then
         assertEquals("updatedTitle", response.title());
@@ -199,9 +203,13 @@ class PlanServiceTest {
                 .numberOfMembers(1)
                 .build();
 
+        UserEntity user = UserEntity.builder()
+                .id(1L)
+                .build();
+
         // when
         IllegalArgumentException illegalArgumentException = assertThrows(
-                IllegalArgumentException.class, () -> planService.updatePlan(1L, request)
+                IllegalArgumentException.class, () -> planService.updatePlan(1L, request, user)
         );
 
         // then
@@ -225,9 +233,13 @@ class PlanServiceTest {
         given(planRepository.findById(1L))
                 .willReturn(Optional.empty());
 
+        UserEntity user = UserEntity.builder()
+                .id(1L)
+                .build();
+
         // when
         IllegalArgumentException illegalArgumentException = assertThrows(
-                IllegalArgumentException.class, () -> planService.updatePlan(1L, request)
+                IllegalArgumentException.class, () -> planService.updatePlan(1L, request, user)
         );
 
         // then
@@ -246,8 +258,12 @@ class PlanServiceTest {
                                 .build()
                 ));
 
+        UserEntity user = UserEntity.builder()
+                .id(1L)
+                .build();
+
         //when
-        PlanDeleteResponseDto planDeleteResponseDto = planService.deletePlan(1L);
+        PlanDeleteResponseDto planDeleteResponseDto = planService.deletePlan(1L, user);
 
         //then
         assertEquals("success", planDeleteResponseDto.message());
@@ -260,9 +276,13 @@ class PlanServiceTest {
         given(planRepository.findById(1L))
                 .willReturn(Optional.empty());
 
+        UserEntity user = UserEntity.builder()
+                .id(1L)
+                .build();
+
         //when
         IllegalArgumentException illegalArgumentException = assertThrows(
-                IllegalArgumentException.class, () -> planService.deletePlan(1L)
+                IllegalArgumentException.class, () -> planService.deletePlan(1L, user)
         );
 
         //then
@@ -303,11 +323,15 @@ class PlanServiceTest {
                 .build();
         budget.addPlace(place);
 
-        given(planRepository.findAll())
+        UserEntity user = UserEntity.builder()
+                .id(1L)
+                .build();
+
+        given(planRepository.findAllByUser(user))
                 .willReturn(List.of(plan));
 
         //when
-        List<PlanDto> planDtoList = planService.getPlanList();
+        List<PlanDto> planDtoList = planService.getPlanList(user);
 
         //then
         assertEquals(1, planDtoList.size());

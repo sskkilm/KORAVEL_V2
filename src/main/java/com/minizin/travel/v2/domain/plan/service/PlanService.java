@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class PlanService {
 
     private final PlanRepository planRepository;
 
-    public PlanCreateDto.Response createPlan(PlanCreateDto.Request request) {
+    public PlanCreateDto.Response createPlan(PlanCreateDto.Request request, UserEntity user) {
 
         if (request.startDate().isAfter(request.endDate())) {
             throw new IllegalArgumentException("startDate cannot be after than endDate");
@@ -27,13 +28,13 @@ public class PlanService {
 
         return PlanCreateDto.Response.toDto(
                 planRepository.save(
-                        PlanCreateDto.Request.toEntity(request, UserEntity.builder().id(1L).build())
+                        PlanCreateDto.Request.toEntity(request, user)
                 )
         );
     }
 
     @Transactional
-    public PlanUpdateDto.Response updatePlan(Long planId, PlanUpdateDto.Request request) {
+    public PlanUpdateDto.Response updatePlan(Long planId, PlanUpdateDto.Request request, UserEntity user) {
 
         if (request.startDate().isAfter(request.endDate())) {
             throw new IllegalArgumentException("startDate cannot be after than endDate");
@@ -41,6 +42,10 @@ public class PlanService {
 
         Plan plan = planRepository.findById(planId)
                 .orElseThrow(() -> new IllegalArgumentException("plan not found"));
+
+//        if (!Objects.equals(plan.getUser().getId(), user.getId())) {
+//            throw new IllegalArgumentException("user plan unmatched");
+//        }
 
         plan.update(
                 request.title(), request.thema(), request.startDate(),
@@ -51,9 +56,13 @@ public class PlanService {
     }
 
     @Transactional
-    public PlanDeleteResponseDto deletePlan(Long planId) {
+    public PlanDeleteResponseDto deletePlan(Long planId, UserEntity user) {
         Plan plan = planRepository.findById(planId)
                 .orElseThrow(() -> new IllegalArgumentException("plan not found"));
+
+//        if (!Objects.equals(plan.getUser().getId(), user.getId())) {
+//            throw new IllegalArgumentException("user plan unmatched");
+//        }
 
         planRepository.delete(plan);
 
@@ -61,8 +70,8 @@ public class PlanService {
     }
 
     @Transactional(readOnly = true)
-    public List<PlanDto> getPlanList() {
+    public List<PlanDto> getPlanList(UserEntity user) {
 
-        return planRepository.findAll().stream().map(PlanDto::toDto).toList();
+        return planRepository.findAllByUser(user).stream().map(PlanDto::toDto).toList();
     }
 }

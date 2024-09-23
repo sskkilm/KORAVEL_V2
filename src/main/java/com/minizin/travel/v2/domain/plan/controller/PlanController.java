@@ -5,6 +5,7 @@ import com.minizin.travel.v2.domain.plan.dto.PlanDeleteResponseDto;
 import com.minizin.travel.v2.domain.plan.dto.PlanDto;
 import com.minizin.travel.v2.domain.plan.dto.PlanUpdateDto;
 import com.minizin.travel.v2.domain.plan.service.PlanService;
+import com.minizin.travel.v2.domain.user.entity.UserEntity;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class PlanController {
     public PlanCreateDto.Response createPlan(
             @Valid @RequestBody PlanCreateDto.Request request
     ) {
-        return planService.createPlan(request);
+        return planService.createPlan(request, UserEntity.builder().id(1L).build());
     }
 
     @PutMapping("/{id}")
@@ -30,16 +31,16 @@ public class PlanController {
             @PathVariable Long id,
             @Valid @RequestBody PlanUpdateDto.Request request
     ) {
-        return planService.updatePlan(id, request);
+        return planService.updatePlan(id, request, UserEntity.builder().id(1L).build());
     }
 
     @DeleteMapping("/{id}")
     public PlanDeleteResponseDto deletePlan(@PathVariable Long id) {
-        return planService.deletePlan(id);
+        return planService.deletePlan(id, UserEntity.builder().id(1L).build());
     }
 
     @GetMapping
     public List<PlanDto> getPlanList() {
-        return planService.getPlanList();
+        return planService.getPlanList(UserEntity.builder().id(1L).build());
     }
 }
