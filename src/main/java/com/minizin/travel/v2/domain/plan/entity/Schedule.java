@@ -2,6 +2,7 @@ package com.minizin.travel.v2.domain.plan.entity;
 
 import com.minizin.travel.v2.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,5 +40,9 @@ public class Schedule extends BaseTimeEntity {
     public void addPlan(Plan plan) {
         this.plan = plan;
         plan.getScheduleList().add(this);
+    }
+
+    public void update(LocalDate date) {
+        this.date = date;
     }
 }
