@@ -45,7 +45,7 @@ class BudgetServiceTest {
                 .schedule(schedule)
                 .build();
 
-        given(budgetRepository.findById(1L))
+        given(budgetRepository.findByIdWithPlaceAndScheduleAndPlan(1L))
                 .willReturn(Optional.of(
                         Budget.builder()
                                 .place(place)
@@ -71,7 +71,7 @@ class BudgetServiceTest {
     @DisplayName("예산 수정 실패 - 존재하지 않는 예산")
     void updateBudget_fail_BudgetNotFound() {
         //given
-        given(budgetRepository.findById(1L))
+        given(budgetRepository.findByIdWithPlaceAndScheduleAndPlan(1L))
                 .willReturn(Optional.empty());
 
         BudgetUpdateDto.Request request = BudgetUpdateDto.Request.builder().build();
@@ -101,7 +101,7 @@ class BudgetServiceTest {
         Place place = Place.builder()
                 .schedule(schedule)
                 .build();
-        given(budgetRepository.findById(1L))
+        given(budgetRepository.findByIdWithPlaceAndScheduleAndPlan(1L))
                 .willReturn(Optional.of(
                         Budget.builder()
                                 .place(place)

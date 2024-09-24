@@ -18,7 +18,7 @@ public class BudgetService {
 
     @Transactional
     public BudgetUpdateDto.Response updateBudget(Long budgetId, BudgetUpdateDto.Request request, UserEntity user) {
-        Budget budget = budgetRepository.findById(budgetId)
+        Budget budget = budgetRepository.findByIdWithPlaceAndScheduleAndPlan(budgetId)
                 .orElseThrow(() -> new IllegalArgumentException("budget not found"));
 
         if (!Objects.equals(budget.getPlace().getSchedule().getPlan().getUser().getId(), user.getId())) {
