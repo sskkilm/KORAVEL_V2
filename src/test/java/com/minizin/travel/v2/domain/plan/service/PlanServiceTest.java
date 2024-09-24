@@ -40,15 +40,15 @@ class PlanServiceTest {
         LocalTime time = LocalTime.of(11, 22);
         LocalDate date = LocalDate.of(2024, 9, 17);
 
-        List<BudgetDto.Request> budgetDtoRequestList = List.of(
-                BudgetDto.Request.builder()
+        List<BudgetCreateDto.Request> budgets = List.of(
+                BudgetCreateDto.Request.builder()
                         .purpose("purpose")
                         .amount(10000)
                         .build()
         );
 
-        List<PlaceDto.Request> placeDtoRequestList = List.of(
-                PlaceDto.Request.builder()
+        List<PlaceCreateDto.Request> places = List.of(
+                PlaceCreateDto.Request.builder()
                         .description("description")
                         .name("name")
                         .address("address")
@@ -56,14 +56,14 @@ class PlanServiceTest {
                         .memo("memo")
                         .x(1.0)
                         .y(1.0)
-                        .budgetDtoRequestList(budgetDtoRequestList)
+                        .budgets(budgets)
                         .build()
         );
 
-        List<ScheduleDto.Request> scheduleDtoRequestList = List.of(
-                ScheduleDto.Request.builder()
+        List<ScheduleCreateDto.Request> schedules = List.of(
+                ScheduleCreateDto.Request.builder()
                         .date(date)
-                        .placeDtoRequestList(placeDtoRequestList)
+                        .places(places)
                         .build()
         );
 
@@ -74,7 +74,7 @@ class PlanServiceTest {
                 .endDate(date)
                 .visibility(Visibility.PUBLIC)
                 .numberOfMembers(1)
-                .scheduleDtoRequestList(scheduleDtoRequestList)
+                .schedules(schedules)
                 .build();
 
         UserEntity user = UserEntity.builder()
@@ -96,10 +96,10 @@ class PlanServiceTest {
         assertEquals(Visibility.PUBLIC, response.visibility());
         assertEquals(1, response.numberOfMembers());
 
-        ScheduleDto.Response scheduleDtoResponse = response.scheduleDtoResponseList().get(0);
+        ScheduleCreateDto.Response scheduleDtoResponse = response.schedules().get(0);
         assertEquals(date, scheduleDtoResponse.date());
 
-        PlaceDto.Response placeDtoResponse = scheduleDtoResponse.placeDtoResponseList().get(0);
+        PlaceCreateDto.Response placeDtoResponse = scheduleDtoResponse.places().get(0);
         assertEquals("description", placeDtoResponse.description());
         assertEquals("name", placeDtoResponse.name());
         assertEquals("address", placeDtoResponse.address());
@@ -108,7 +108,7 @@ class PlanServiceTest {
         assertEquals(1.0, placeDtoResponse.x());
         assertEquals(1.0, placeDtoResponse.y());
 
-        BudgetDto.Response budgetDtoResponse = placeDtoResponse.budgetDtoResponseList().get(0);
+        BudgetCreateDto.Response budgetDtoResponse = placeDtoResponse.budgets().get(0);
         assertEquals("purpose", budgetDtoResponse.purpose());
         assertEquals(10000, budgetDtoResponse.amount());
     }
@@ -309,10 +309,10 @@ class PlanServiceTest {
                 ));
 
         //when
-        PlanDeleteResponseDto planDeleteResponseDto = planService.deletePlan(1L, user);
+        PlanDeleteDto planDeleteDto = planService.deletePlan(1L, user);
 
         //then
-        assertEquals("success", planDeleteResponseDto.message());
+        assertEquals("success", planDeleteDto.message());
     }
 
     @Test
@@ -419,20 +419,20 @@ class PlanServiceTest {
         assertEquals(Visibility.PUBLIC, planDto.visibility());
         assertEquals(1, planDto.numberOfMembers());
 
-        ScheduleDto.Response scheduleDtoResponse = planDto.scheduleDtoResponseList().get(0);
-        assertEquals(date, scheduleDtoResponse.date());
+        ScheduleDto scheduleDto = planDto.schedules().get(0);
+        assertEquals(date, scheduleDto.date());
 
-        PlaceDto.Response placeDtoResponse = scheduleDtoResponse.placeDtoResponseList().get(0);
-        assertEquals("description", placeDtoResponse.description());
-        assertEquals("name", placeDtoResponse.name());
-        assertEquals("address", placeDtoResponse.address());
-        assertEquals("memo", placeDtoResponse.memo());
-        assertEquals(time, placeDtoResponse.arrivalTime());
-        assertEquals(1.0, placeDtoResponse.x());
-        assertEquals(1.0, placeDtoResponse.y());
+        PlaceDto placeDto = scheduleDto.places().get(0);
+        assertEquals("description", placeDto.description());
+        assertEquals("name", placeDto.name());
+        assertEquals("address", placeDto.address());
+        assertEquals("memo", placeDto.memo());
+        assertEquals(time, placeDto.arrivalTime());
+        assertEquals(1.0, placeDto.x());
+        assertEquals(1.0, placeDto.y());
 
-        BudgetDto.Response budgetDtoResponse = placeDtoResponse.budgetDtoResponseList().get(0);
-        assertEquals("purpose", budgetDtoResponse.purpose());
-        assertEquals(10000, budgetDtoResponse.amount());
+        BudgetDto budgetDto = placeDto.budgets().get(0);
+        assertEquals("purpose", budgetDto.purpose());
+        assertEquals(10000, budgetDto.amount());
     }
 }

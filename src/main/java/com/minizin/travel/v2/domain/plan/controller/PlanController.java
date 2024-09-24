@@ -1,7 +1,7 @@
 package com.minizin.travel.v2.domain.plan.controller;
 
 import com.minizin.travel.v2.domain.plan.dto.PlanCreateDto;
-import com.minizin.travel.v2.domain.plan.dto.PlanDeleteResponseDto;
+import com.minizin.travel.v2.domain.plan.dto.PlanDeleteDto;
 import com.minizin.travel.v2.domain.plan.dto.PlanDto;
 import com.minizin.travel.v2.domain.plan.dto.PlanUpdateDto;
 import com.minizin.travel.v2.domain.plan.service.PlanService;
@@ -35,7 +35,7 @@ public class PlanController {
     }
 
     @DeleteMapping("/{id}")
-    public PlanDeleteResponseDto deletePlan(@PathVariable Long id) {
+    public PlanDeleteDto deletePlan(@PathVariable Long id) {
         return planService.deletePlan(id, UserEntity.builder().id(1L).build());
     }
 

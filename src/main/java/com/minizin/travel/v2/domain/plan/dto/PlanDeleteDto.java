@@ -1,6 +1,6 @@
 package com.minizin.travel.v2.domain.plan.dto;
 
-public record PlanDeleteResponseDto(
+public record PlanDeleteDto(
         String message
 ) {
 }

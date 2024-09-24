@@ -29,7 +29,7 @@ public record PlanCreateDto(String a, String b) {
             @Min(1)
             Integer numberOfMembers,
             @NotNull
-            List<ScheduleDto.Request> scheduleDtoRequestList
+            List<ScheduleCreateDto.Request> schedules
     ) {
         public static Plan toEntity(Request request, UserEntity user) {
             Plan plan = Plan.builder()
@@ -42,8 +42,8 @@ public record PlanCreateDto(String a, String b) {
                     .numberOfMembers(request.numberOfMembers())
                     .build();
 
-            for (ScheduleDto.Request scheduleDtoRequest : request.scheduleDtoRequestList()) {
-                Schedule schedule = ScheduleDto.Request.toEntity(scheduleDtoRequest);
+            for (ScheduleCreateDto.Request scheduleDtoRequest : request.schedules()) {
+                Schedule schedule = ScheduleCreateDto.Request.toEntity(scheduleDtoRequest);
                 schedule.addPlan(plan);
             }
 
@@ -62,7 +62,7 @@ public record PlanCreateDto(String a, String b) {
             LocalDate endDate,
             Visibility visibility,
             Integer numberOfMembers,
-            List<ScheduleDto.Response> scheduleDtoResponseList
+            List<ScheduleCreateDto.Response> schedules
     ) {
         public static Response toDto(Plan plan) {
             return Response.builder()
@@ -75,9 +75,9 @@ public record PlanCreateDto(String a, String b) {
                     .endDate(plan.getEndDate())
                     .visibility(plan.getVisibility())
                     .numberOfMembers(plan.getNumberOfMembers())
-                    .scheduleDtoResponseList(
+                    .schedules(
                             plan.getScheduleList().stream()
-                                    .map(ScheduleDto.Response::toDto).toList()
+                                    .map(ScheduleCreateDto.Response::toDto).toList()
                     )
                     .build();
         }

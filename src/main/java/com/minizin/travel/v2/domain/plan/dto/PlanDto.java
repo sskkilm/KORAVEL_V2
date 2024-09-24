@@ -15,7 +15,7 @@ public record PlanDto(
         LocalDate endDate,
         Visibility visibility,
         Integer numberOfMembers,
-        List<ScheduleDto.Response> scheduleDtoResponseList
+        List<ScheduleDto> schedules
 ) {
     public static PlanDto toDto(Plan plan) {
         return PlanDto.builder()
@@ -25,9 +25,9 @@ public record PlanDto(
                 .endDate(plan.getEndDate())
                 .visibility(plan.getVisibility())
                 .numberOfMembers(plan.getNumberOfMembers())
-                .scheduleDtoResponseList(
+                .schedules(
                         plan.getScheduleList().stream()
-                                .map(ScheduleDto.Response::toDto).toList()
+                                .map(ScheduleDto::toDto).toList()
                 )
                 .build();
     }

@@ -1,7 +1,7 @@
 package com.minizin.travel.v2.domain.plan.service;
 
 import com.minizin.travel.v2.domain.plan.dto.PlanCreateDto;
-import com.minizin.travel.v2.domain.plan.dto.PlanDeleteResponseDto;
+import com.minizin.travel.v2.domain.plan.dto.PlanDeleteDto;
 import com.minizin.travel.v2.domain.plan.dto.PlanDto;
 import com.minizin.travel.v2.domain.plan.dto.PlanUpdateDto;
 import com.minizin.travel.v2.domain.plan.entity.Plan;
@@ -56,7 +56,7 @@ public class PlanService {
     }
 
     @Transactional
-    public PlanDeleteResponseDto deletePlan(Long planId, UserEntity user) {
+    public PlanDeleteDto deletePlan(Long planId, UserEntity user) {
         Plan plan = planRepository.findById(planId)
                 .orElseThrow(() -> new IllegalArgumentException("plan not found"));
 
@@ -66,7 +66,7 @@ public class PlanService {
 
         planRepository.delete(plan);
 
-        return new PlanDeleteResponseDto("success");
+        return new PlanDeleteDto("success");
     }
 
     @Transactional(readOnly = true)
