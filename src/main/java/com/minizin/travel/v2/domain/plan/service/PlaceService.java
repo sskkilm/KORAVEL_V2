@@ -18,7 +18,7 @@ public class PlaceService {
 
     @Transactional
     public PlaceUpdateDto.Response updatePlace(Long placeId, PlaceUpdateDto.Request request, UserEntity user) {
-        Place place = placeRepository.findById(placeId)
+        Place place = placeRepository.findByIdWithScheduleAndPlan(placeId)
                 .orElseThrow(() -> new IllegalArgumentException("place not found"));
 
         if (!Objects.equals(place.getSchedule().getPlan().getUser().getId(), user.getId())) {

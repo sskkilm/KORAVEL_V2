@@ -44,7 +44,7 @@ class PlaceServiceTest {
                 .plan(plan)
                 .build();
 
-        given(placeRepository.findById(1L))
+        given(placeRepository.findByIdWithScheduleAndPlan(1L))
                 .willReturn(Optional.of(
                         Place.builder()
                                 .schedule(schedule)
@@ -86,7 +86,7 @@ class PlaceServiceTest {
     @DisplayName("장소 수정 실패 - 존재하지 않는 장소")
     void updatePlace_fail_PlaceNotFound() {
         //given
-        given(placeRepository.findById(1L))
+        given(placeRepository.findByIdWithScheduleAndPlan(1L))
                 .willReturn(Optional.empty());
 
         PlaceUpdateDto.Request request = PlaceUpdateDto.Request.builder().build();
@@ -116,7 +116,7 @@ class PlaceServiceTest {
                 .plan(plan)
                 .build();
 
-        given(placeRepository.findById(1L))
+        given(placeRepository.findByIdWithScheduleAndPlan(1L))
                 .willReturn(Optional.of(
                         Place.builder()
                                 .schedule(schedule)
