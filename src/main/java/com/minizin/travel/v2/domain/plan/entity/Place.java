@@ -2,6 +2,8 @@ package com.minizin.travel.v2.domain.plan.entity;
 
 import com.minizin.travel.v2.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -62,5 +64,16 @@ public class Place extends BaseTimeEntity {
     public void addSchedule(Schedule schedule) {
         this.schedule = schedule;
         schedule.getPlaceList().add(this);
+    }
+
+    public void update(String description, String name, String address, LocalTime arrivalTime,
+                       String memo, Double x, Double y) {
+        this.description = description;
+        this.name = name;
+        this.address = address;
+        this.memo = memo;
+        this.arrivalTime = arrivalTime;
+        this.x = x;
+        this.y = y;
     }
 }
