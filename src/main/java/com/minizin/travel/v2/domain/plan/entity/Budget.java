@@ -2,6 +2,8 @@ package com.minizin.travel.v2.domain.plan.entity;
 
 import com.minizin.travel.v2.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
@@ -33,5 +35,10 @@ public class Budget extends BaseTimeEntity {
     public void addPlace(Place place) {
         this.place = place;
         place.getBudgetList().add(this);
+    }
+
+    public void update(String purpose, Integer amount) {
+        this.purpose = purpose;
+        this.amount = amount;
     }
 }
