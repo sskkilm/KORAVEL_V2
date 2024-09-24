@@ -18,7 +18,7 @@ public class ScheduleService {
 
     @Transactional
     public ScheduleUpdateDto.Response updateSchedule(Long scheduleId, ScheduleUpdateDto.Request request, UserEntity user) {
-        Schedule schedule = scheduleRepository.findById(scheduleId)
+        Schedule schedule = scheduleRepository.findByIdWithPlan(scheduleId)
                 .orElseThrow(() -> new IllegalArgumentException("schedule not found"));
 
         if (!Objects.equals(schedule.getPlan().getUser().getId(), user.getId())) {

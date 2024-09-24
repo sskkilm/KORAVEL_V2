@@ -46,7 +46,7 @@ class ScheduleServiceTest {
                 .user(user)
                 .build();
 
-        given(scheduleRepository.findById(1L))
+        given(scheduleRepository.findByIdWithPlan(1L))
                 .willReturn(Optional.of(
                         Schedule.builder()
                                 .plan(plan)
@@ -65,7 +65,7 @@ class ScheduleServiceTest {
     @DisplayName("일정 수정 실패 - 존재하지 않는 일정")
     void updateSchedule_fail_ScheduleNotFound() {
         //given
-        given(scheduleRepository.findById(1L))
+        given(scheduleRepository.findByIdWithPlan(1L))
                 .willReturn(Optional.empty());
 
         ScheduleUpdateDto.Request request = ScheduleUpdateDto.Request.builder().build();
@@ -93,7 +93,7 @@ class ScheduleServiceTest {
                 .user(user)
                 .build();
 
-        given(scheduleRepository.findById(1L))
+        given(scheduleRepository.findByIdWithPlan(1L))
                 .willReturn(Optional.of(
                         Schedule.builder()
                                 .plan(plan)
