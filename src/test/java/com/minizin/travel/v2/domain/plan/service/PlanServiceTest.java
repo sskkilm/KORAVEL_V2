@@ -403,11 +403,11 @@ class PlanServiceTest {
                 .id(1L)
                 .build();
 
-        given(planRepository.findAllByUser(user))
+        given(planRepository.findAllByUserOrderById(user))
                 .willReturn(List.of(plan));
 
         //when
-        List<PlanDto> planDtoList = planService.getPlanList(user);
+        List<PlanDto> planDtoList = planService.getMyPlanList(user);
 
         //then
         assertEquals(1, planDtoList.size());

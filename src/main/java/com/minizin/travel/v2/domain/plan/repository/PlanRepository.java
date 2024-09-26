@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface PlanRepository extends JpaRepository<Plan, Long> {
-    List<Plan> findAllByUser(UserEntity user);
+    List<Plan> findAllByUserOrderById(UserEntity user);
 }

@@ -29,6 +29,7 @@ public class Schedule extends BaseTimeEntity {
     private LocalDate date;
 
     @OneToMany(mappedBy = "schedule", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OrderBy("id")
     private List<Place> placeList = new ArrayList<>();
 
     @Builder

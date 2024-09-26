@@ -9,6 +9,7 @@ import java.util.List;
 
 @Builder
 public record PlanDto(
+        Long planId,
         String title,
         String thema,
         LocalDate startDate,
@@ -19,6 +20,7 @@ public record PlanDto(
 ) {
     public static PlanDto toDto(Plan plan) {
         return PlanDto.builder()
+                .planId(plan.getId())
                 .title(plan.getTitle())
                 .thema(plan.getThema())
                 .startDate(plan.getStartDate())

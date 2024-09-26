@@ -70,8 +70,10 @@ public class PlanService {
     }
 
     @Transactional(readOnly = true)
-    public List<PlanDto> getPlanList(UserEntity user) {
+    public List<PlanDto> getMyPlanList(UserEntity user) {
 
-        return planRepository.findAllByUser(user).stream().map(PlanDto::toDto).toList();
+        return planRepository.findAllByUserOrderById(user).stream().map(PlanDto::toDto).toList();
     }
+
+
 }

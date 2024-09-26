@@ -49,6 +49,7 @@ public class Plan extends BaseTimeEntity {
     private Visibility visibility;
 
     @OneToMany(mappedBy = "plan", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OrderBy("id")
     private List<Schedule> scheduleList = new ArrayList<>();
 
     @Builder

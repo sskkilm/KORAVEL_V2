@@ -47,6 +47,7 @@ public class Place extends BaseTimeEntity {
     private Double y;
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OrderBy("id")
     private List<Budget> budgetList = new ArrayList<>();
 
     @Builder
