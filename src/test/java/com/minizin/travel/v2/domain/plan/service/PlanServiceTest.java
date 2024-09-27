@@ -445,12 +445,8 @@ class PlanServiceTest {
         //given
         PageRequest pageRequest = PageRequest.of(0, 1);
         List<Plan> plans = List.of(
-                Plan.builder()
-                        .title("title1")
-                        .build(),
-                Plan.builder()
-                        .title("title2")
-                        .build()
+                Plan.builder().title("title1").build(),
+                Plan.builder().title("title2").build()
         );
         given(planRepository.findAllByOrderByCreatedAtDesc(pageRequest))
                 .willReturn(new PageImpl<>(plans, pageRequest, plans.size()));
@@ -462,5 +458,6 @@ class PlanServiceTest {
         //then
         assertEquals(1, page.getSize());
         assertEquals(2, page.getTotalElements());
+        assertEquals("title1", page.getContent().get(0).title());
     }
 }
