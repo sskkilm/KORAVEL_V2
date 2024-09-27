@@ -14,6 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -434,5 +437,30 @@ class PlanServiceTest {
         BudgetDto budgetDto = placeDto.budgets().get(0);
         assertEquals("purpose", budgetDto.purpose());
         assertEquals(10000, budgetDto.amount());
+    }
+
+    @Test
+    @DisplayName("모든 사용자의 여행 계획 목록 조회")
+    void getAllPlanList_success() {
+        //given
+        PageRequest pageRequest = PageRequest.of(0, 1);
+        List<Plan> plans = List.of(
+                Plan.builder()
+                        .title("title1")
+                        .build(),
+                Plan.builder()
+                        .title("title2")
+                        .build()
+        );
+        given(planRepository.findAllByOrderByCreatedAtDesc(pageRequest))
+                .willReturn(new PageImpl<>(plans, pageRequest, plans.size()));
+
+
+        //when
+        Page<PlanDto> page = planService.getAllPlanList(pageRequest);
+
+        //then
+        assertEquals(1, page.getSize());
+        assertEquals(2, page.getTotalElements());
     }
 }
