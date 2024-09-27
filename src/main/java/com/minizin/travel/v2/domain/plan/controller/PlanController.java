@@ -9,9 +9,9 @@ import com.minizin.travel.v2.domain.user.entity.UserEntity;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -46,8 +46,8 @@ public class PlanController {
         return planService.getMyPlanList(UserEntity.builder().id(1L).build());
     }
 
-//    @GetMapping("/users")
-//    public Page<PlanDto> getAllPlanList(Pageable pageable) {
-//        return planService.getAllPlanList(pageable);
-//    }
+    @GetMapping("/users")
+    public Page<PlanDto> getAllPlanList(Pageable pageable) {
+        return planService.getAllPlanList(pageable);
+    }
 }

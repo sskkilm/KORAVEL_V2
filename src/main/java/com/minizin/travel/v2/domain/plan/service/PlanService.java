@@ -8,6 +8,8 @@ import com.minizin.travel.v2.domain.plan.entity.Plan;
 import com.minizin.travel.v2.domain.plan.repository.PlanRepository;
 import com.minizin.travel.v2.domain.user.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,5 +77,8 @@ public class PlanService {
         return planRepository.findAllByUserOrderById(user).stream().map(PlanDto::toDto).toList();
     }
 
-
+    @Transactional(readOnly = true)
+    public Page<PlanDto> getAllPlanList(Pageable pageable) {
+        return planRepository.findAllByOrderByCreatedAtDesc(pageable).map(PlanDto::toDto);
+    }
 }
