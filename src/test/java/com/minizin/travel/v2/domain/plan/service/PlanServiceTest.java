@@ -460,4 +460,84 @@ class PlanServiceTest {
         assertEquals(2, page.getTotalElements());
         assertEquals("title1", page.getContent().get(0).title());
     }
+
+    @Test
+    @DisplayName("여행 계획 상세 조회 성공")
+    void getPlanDetails_success() {
+        //given
+        LocalTime time = LocalTime.of(11, 22);
+        LocalDate date = LocalDate.of(2024, 9, 17);
+
+        Plan plan = Plan.builder()
+                .title("title")
+                .thema("thema")
+                .startDate(date)
+                .endDate(date)
+                .visibility(Visibility.PUBLIC)
+                .numberOfMembers(1)
+                .build();
+        Schedule schedule = Schedule.builder()
+                .date(date)
+                .build();
+        schedule.addPlan(plan);
+        Place place = Place.builder()
+                .description("description")
+                .name("name")
+                .address("address")
+                .arrivalTime(time)
+                .memo("memo")
+                .x(1.0)
+                .y(1.0)
+                .build();
+        place.addSchedule(schedule);
+        Budget budget = Budget.builder()
+                .purpose("purpose")
+                .amount(10000)
+                .build();
+        budget.addPlace(place);
+
+        given(planRepository.findById(1L))
+                .willReturn(Optional.of(plan));
+
+        //when
+        PlanDto planDto = planService.getPlanDetails(1L);
+
+        //then
+        assertEquals("title", planDto.title());
+        assertEquals("thema", planDto.thema());
+        assertEquals(date, planDto.startDate());
+        assertEquals(date, planDto.endDate());
+        assertEquals(Visibility.PUBLIC, planDto.visibility());
+        assertEquals(1, planDto.numberOfMembers());
+
+        ScheduleDto scheduleDto = planDto.schedules().get(0);
+        assertEquals(date, scheduleDto.date());
+
+        PlaceDto placeDto = scheduleDto.places().get(0);
+        assertEquals("description", placeDto.description());
+        assertEquals("name", placeDto.name());
+        assertEquals("address", placeDto.address());
+        assertEquals("memo", placeDto.memo());
+        assertEquals(time, placeDto.arrivalTime());
+        assertEquals(1.0, placeDto.x());
+        assertEquals(1.0, placeDto.y());
+
+        BudgetDto budgetDto = placeDto.budgets().get(0);
+        assertEquals("purpose", budgetDto.purpose());
+        assertEquals(10000, budgetDto.amount());
+    }
+
+    @Test
+    @DisplayName("여행 계획 상세 조회 실패")
+    void getPlanDetails_fail_PlanNotFound() {
+        //given
+        given(planRepository.findById(1L))
+                .willReturn(Optional.empty());
+
+        //when
+        IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class,
+                () -> planService.getPlanDetails(1L));
+
+        //then
+    }
 }
