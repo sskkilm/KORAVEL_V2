@@ -79,6 +79,15 @@ public class PlanService {
 
     @Transactional(readOnly = true)
     public Page<PlanDto> getAllPlanList(Pageable pageable) {
+
         return planRepository.findAllByOrderByCreatedAtDesc(pageable).map(PlanDto::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public PlanDto getPlanDetails(Long planId) {
+
+        return PlanDto.toDto(planRepository.findById(planId).orElseThrow(
+                () -> new IllegalArgumentException("plan not found")
+        ));
     }
 }

@@ -50,4 +50,9 @@ public class PlanController {
     public Page<PlanDto> getAllPlanList(Pageable pageable) {
         return planService.getAllPlanList(pageable);
     }
+
+    @GetMapping("/{id}")
+    public PlanDto getPlanDetails(@PathVariable Long id) {
+        return planService.getPlanDetails(id);
+    }
 }
